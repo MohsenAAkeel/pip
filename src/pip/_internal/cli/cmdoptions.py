@@ -14,6 +14,7 @@ import importlib.util
 import logging
 import os
 import textwrap
+from sys import implementation as sys_implementation
 from functools import partial
 from optparse import SUPPRESS_HELP, Option, OptionGroup, OptionParser, Values
 from textwrap import dedent
@@ -101,6 +102,24 @@ def check_dist_restriction(options: Values, check_target: bool = False) -> None:
 
 def _path_option_check(option: Option, opt: str, value: str) -> str:
     return os.path.expanduser(value)
+
+
+def validate_implementation_options(options: Values) -> None:
+    impl_dict = {"cpython": "cp", "ironpython": "ip", "pypy": "pp", "jython": "jy"}
+
+    if options.implementation not in ["py", "cp", "ip", "pp", "jy"]:
+        logger.warning(
+            "Your implementation option does not match any known "
+            "implementation. Consider using the current implementation "
+            f"'{impl_dict[sys_implementation.name]}' or the generic 'py'."
+            
+        )
+
+
+def validate_user_options(options: Values) -> None:
+    if options.implementation:
+        validate_implementation_options(options.implementation)
+    
 
 
 def _package_name_option_check(option: Option, opt: str, value: str) -> str:
