@@ -227,6 +227,8 @@ class Command(CommandContextMixIn):
 
         cmdoptions.validate_platform_options(options)
 
+        cmdoptions.validate_implementation_options(options)
+
         try:
             if not options.debug_mode:
                 run = intercepts_unhandled_exc(self.run)
