@@ -1,7 +1,7 @@
 import http.server
 import os
 import re
-import sys
+import platform
 import shutil
 import textwrap
 from hashlib import sha256

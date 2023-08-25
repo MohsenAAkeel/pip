@@ -16,7 +16,8 @@ import os
 import platform
 import re
 import textwrap
-from sys import implementation as sys_implementation
+import sys
+import platform
 from functools import partial
 from optparse import SUPPRESS_HELP, Option, OptionGroup, OptionParser, Values
 from textwrap import dedent
