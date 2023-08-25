@@ -584,14 +584,6 @@ platforms: Callable[..., Option] = partial(
         "Only use wheels compatible with <platform>. Defaults to the "
         "platform of the running system. Use this option multiple times to "
         "specify multiple platforms supported by the target interpreter."
-        "Some possible options include: 'any', "
-        "'manylinux2014_(x86_64|aarch64|armv71)', "
-        "'manylinux_x_y_(x86_64|aarch64|armv71)' "
-        "- x and y are glibc major and minor version numbers, 'linux_x86_64', "
-        "'linux_i386', 'win32', 'win_amd64', "
-        "'macosx_x_y_(x86_64|i386|intel|arm64)' "
-        "- x and y are major and minor version numbers. "
-        "See PEPS 425, 513, 571, 599, and 600"
     ),
 )
 
