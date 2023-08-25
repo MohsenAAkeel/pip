@@ -1,1 +1,1 @@
-Adding implementation option checks for base command, effecting download and install commands 
+Adding implementation option checks for base command, effecting download and install commands
