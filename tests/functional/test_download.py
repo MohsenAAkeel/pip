@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import shutil
 import textwrap
 import uuid
@@ -1645,3 +1646,21 @@ def test_canonicalizes_package_name_before_verifying_metadata(
     assert os.listdir(download_dir) == [
         "requires_simple_extra-0.1-py2.py3-none-any.whl",
     ]
+
+
+def test_download_warning_message_on_improper_platform_tag(
+    script: PipTestEnvironment, data: TestData
+) -> None:
+    impl_dict = {"cpython": "cp", "ironpython": "ip", "pypy": "pp", "jython": "jy"}
+    fake_wheel(data, "fake-9.9-py3-anabi-bad_platform.whl")
+    result = script.pip(
+        "download", "--only-binary=:all:", "--implementation", "bad_imp", "fake_pack"
+    )
+    warning_msg = (
+        f"Your implementation - 'bad_imp' - option does not match a known "
+        "implementation. If this is in error, consider using the current "
+        f"implementation '{impl_dict[sys.implementation.name]}' or the "
+        "generic 'py'. If you are attempting to specify an implementation "
+        "version use the --python-version option to do so."
+    )
+    assert warning_msg in result.stderr
