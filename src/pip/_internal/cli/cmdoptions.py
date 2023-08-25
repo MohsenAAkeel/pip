@@ -16,6 +16,7 @@ import os
 import re
 import textwrap
 import sys
+import platform
 from functools import partial
 from optparse import SUPPRESS_HELP, Option, OptionGroup, OptionParser, Values
 from textwrap import dedent
@@ -114,7 +115,7 @@ def validate_implementation_options(impl: str) -> None:
         logger.warning(
             f"Your implementation - '{impl}' - option does not match a known "
             "implementation. If this is in error, consider using the current "
-            f"implementation '{impl_dict[sys.implementation.name]}' or the "
+            f"implementation '{impl_dict[platform.python_implementation().lower()]}' or the "
             "generic 'py'. If you are attempting to specify an implementation "
             "version use the --python-version option to do so."
         )

@@ -1,6 +1,6 @@
 import os
 import re
-import sys
+import platform
 import shutil
 import textwrap
 import uuid
@@ -1659,7 +1659,7 @@ def test_download_warning_message_on_improper_implementation_tag(
     warning_msg = (
         f"Your implementation - 'bad_imp' - option does not match a known "
         "implementation. If this is in error, consider using the current "
-        f"implementation '{impl_dict[sys.implementation.name]}' or the "
+        f"implementation '{impl_dict[platform.python_implementation().lower()]}' or the "
         "generic 'py'. If you are attempting to specify an implementation "
         "version use the --python-version option to do so."
     )
