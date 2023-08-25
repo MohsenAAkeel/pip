@@ -1,7 +1,6 @@
 import http.server
 import os
 import re
-import platform
 import shutil
 import textwrap
 from hashlib import sha256
@@ -1475,3 +1474,13 @@ def test_canonicalizes_package_name_before_verifying_metadata(
         "requires_simple_extra-0.1-py2.py3-none-any.whl",
     ]
 
+
+def test_download_warning_message_on_improper_implementation_tag(
+    script: PipTestEnvironment, data: TestData
+) -> None:
+    fake_wheel(data, "fake-9.9-py3-anabi-bad_platform.whl")
+    result = script.pip(
+        "download", "--only-binary=:all:", "--implementation", "bad_imp", "fake_pack"
+    )
+    assert "Your implementation - 'bad_imp' - option does not" in result.stderr
+    assert "Consider specifying a python version" in result.stderr
