@@ -13,10 +13,9 @@ pass on state. To be consistent, all options will follow this design.
 import importlib.util
 import logging
 import os
+import platform
 import re
 import textwrap
-import sys
-import platform
 from functools import partial
 from optparse import SUPPRESS_HELP, Option, OptionGroup, OptionParser, Values
 from textwrap import dedent
@@ -105,38 +104,44 @@ def check_dist_restriction(options: Values, check_target: bool = False) -> None:
 def validate_implementation_options(impl: str, py_ver: str) -> None:
     impl_dict = {"cpython": "cp", "ironpython": "ip", "pypy": "pp", "jython": "jy"}
 
-    if len(impl) < 2 \
-        or (len(impl) > 1 \
-            and impl not in ["py", "cp", "ip", "pp", "jy"]):
+    if len(impl) < 2 or (
+        len(impl) > 1
+        and (
+            impl not in ["py", "cp", "ip", "pp", "jy"]
+            or impl != platform.python_implementation().lower()
+        )
+    ):
         # All implementations should be of a length greater than 1.
         # We check here for the common implementations, but the
         # possibility of other, valid, options exists. For this reason
-        # only provide a warning. 
-        logger.warning(
+        # only provide a warning.
+        impl_message = (
             f"Your implementation - '{impl}' - option does not match a known "
             "implementation. If this is in error, consider using the current "
-            f"implementation '{impl_dict[platform.python_implementation().lower()]}' or the "
-            "generic 'py'. If you are attempting to specify an implementation "
+            f"implementation '{impl_dict[platform.python_implementation().lower()]}' "
+            "or the generic 'py'. If you are attempting to specify an implementation "
             "version use the --python-version option to do so."
         )
-    
+        logger.warning(impl_message)
+
     if not py_ver:
         # pip currently fails on invalid input for --python-version, but
         # it's possible a user may require a specific python version for
         # their package. Notify them this is an option with a warning.
-        current_py_ver = re.match('\d+.\d+', platform.python_version())\
-            .group(0)\
-            .replace('.', '')
-        logger.warning(
+        current_py_ver = (
+            re.match(r"\d+.\d+", platform.python_version()).group(0).replace(".", "")
+        )
+        py_ver_message = (
             "Consider specifying a python version using --python-version."
             f"For example, your current python version is {current_py_ver}"
         )
-    
+        logger.warning(py_ver_message)
+
 
 def validate_user_options(options: Values) -> None:
     if options.implementation:
         validate_implementation_options(options.implementation, options.python_version)
-    
+
 
 def _path_option_check(option: Option, opt: str, value: str) -> str:
     return os.path.expanduser(value)
