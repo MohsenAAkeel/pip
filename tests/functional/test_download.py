@@ -1648,7 +1648,7 @@ def test_canonicalizes_package_name_before_verifying_metadata(
     ]
 
 
-def test_download_warning_message_on_improper_platform_tag(
+def test_download_warning_message_on_improper_implementation_tag(
     script: PipTestEnvironment, data: TestData
 ) -> None:
     impl_dict = {"cpython": "cp", "ironpython": "ip", "pypy": "pp", "jython": "jy"}
