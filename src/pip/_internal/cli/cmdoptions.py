@@ -122,7 +122,7 @@ def validate_implementation_option(impl: str) -> None:
             "or the generic 'py'. If you are attempting to specify an implementation "
             "version use the --python-version option to do so."
         )
-        logger.warning(impl_message)
+        print(impl_message)
 
 
 def validate_python_version_option(py_ver: Tuple[int, ...]) -> None:
@@ -137,7 +137,7 @@ def validate_python_version_option(py_ver: Tuple[int, ...]) -> None:
             "Consider specifying a python version using --python-version. "
             f"For example, your current python version is {current_py_ver}"
         )
-        logger.warning(py_ver_message)
+        print(py_ver_message)
 
 
 def validate_user_options(options: Values) -> None:
