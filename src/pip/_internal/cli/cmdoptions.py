@@ -101,7 +101,7 @@ def check_dist_restriction(options: Values, check_target: bool = False) -> None:
             )
 
 
-def validate_implementation_options(impl: str, py_ver: str) -> None:
+def validate_implementation_option(impl: str, py_ver: str) -> None:
     impl_dict = {"cpython": "cp", "ironpython": "ip", "pypy": "pp", "jython": "jy"}
 
     if len(impl) < 2 or (
@@ -124,6 +124,7 @@ def validate_implementation_options(impl: str, py_ver: str) -> None:
         )
         logger.warning(impl_message)
 
+def validate_python_version_option(py_ver) -> None:
     if not py_ver:
         # pip currently fails on invalid input for --python-version, but
         # it's possible a user may require a specific python version for
@@ -131,16 +132,22 @@ def validate_implementation_options(impl: str, py_ver: str) -> None:
         current_py_ver = (
             re.match(r"\d+.\d+", platform.python_version()).group(0).replace(".", "")
         )
-        py_ver_message = (
-            "Consider specifying a python version using --python-version."
+        py_ver_message = \
+            "Consider specifying a python version using --python-version." \
             f"For example, your current python version is {current_py_ver}"
-        )
         logger.warning(py_ver_message)
+    else:
+        result = re.match('\d+', py_ver)
+        if not result:
+            py_ver_message = "The python version does not follow the standard format. " \
+            "Please specify the version using at least one number and using numbers only"
+            logger.warning(py_ver_message)
 
 
 def validate_user_options(options: Values) -> None:
     if options.implementation:
-        validate_implementation_options(options.implementation, options.python_version)
+        validate_implementation_option(options.implementation, options.python_version)
+        validate_python_version_option(options.python_version)
 
 
 def _path_option_check(option: Option, opt: str, value: str) -> str:
