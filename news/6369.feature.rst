@@ -1,1 +1,1 @@
-Adding platform option checks for the download command and extending platform help text to include some PEP standard platform tags
+Adding implementation option checks for base command, effecting download and install commands 
