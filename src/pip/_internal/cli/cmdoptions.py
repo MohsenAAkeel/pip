@@ -146,10 +146,6 @@ def validate_user_options(options: Values) -> None:
     if options.implementation:
         validate_implementation_option(options.implementation)
         validate_python_version_option(options.python_version)
-    elif options.python_version:
-        # Users can optionally specify a python_version without
-        # specifying an implementation and get a valid result
-        validate_python_version_option(options.python_version)
 
 
 def _path_option_check(option: Option, opt: str, value: str) -> str:
